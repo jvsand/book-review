@@ -79,7 +79,6 @@ export function SignUp() {
             onChange={handleEmailChange}
             required
           />
-          
         </div>
         <div>
           <label htmlFor="password">パスワード:</label>
