@@ -2,26 +2,30 @@ describe('ログインフォームのテスト', () => {
   it('ユーザー名とメールアドレスが正しい場合', () => {
     cy.visit('http://localhost:3000/signup');
 
-    cy.get('#name').type('sampleb');
-    cy.get('#email').type('example111@example.com');
-    cy.get('#password').type('AAbb1122');
+    cy.get('#name').type('ss1');
+    cy.get('#email').type('ss1@example.com');
+    cy.get('#password').type('ss1');
 
     cy.get('button').click();
   });
 
-  // it('メールアドレスがない場合', () => {
-  //   cy.visit('http://localhost:3000/');
-  //   cy.get('#username').type('sampleA');
+  it('ユーザー名とメールアドレスがすでに登録されている場合', () => {
+    cy.visit('http://localhost:3000/signup');
 
-  //   cy.get('#username').should('have.value', 'sampleA');
-  //   cy.get('#email').should('have.value', '');
-  // });
-  
-  // it('ユーザー名がない場合', () => {
-  //   cy.visit('http://localhost:3000/'); 
-  //   cy.get('#email').type('example@example.com');
+    cy.get('#name').type('ss');
+    cy.get('#email').type('ss@example.com');
+    cy.get('#password').type('ss');
 
-  //   cy.get('#username').should('have.value', '');
-  //   cy.get('#email').should('have.value', 'example@example.com');
-  // });
+    cy.get('button').click();
+    cy.get('.error-message').should('contain', 'すでに登録済みです。');
+  });
+  it('サインインからHome画面の確認', () => {
+    cy.visit('http://localhost:3000/');
+
+    cy.get('#email').type('ss1@example.com');
+    cy.get('#password').type('ss1');
+    cy.get('button').click();
+    // cy.get('button').click();
+    // cy.get('.header').should('contain', 'すでに登録済みです。');
+  });
 });

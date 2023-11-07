@@ -1,40 +1,50 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useCookies } from 'react-cookie';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
+import { signIn } from '../authSlice';
 const url = "https://railway.bookreview.techtrain.dev";
 
 export function SignUp() {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [postComplete, setPostComplete] = useState(false);
+  const auth = useSelector((state) => state.auth.isSignIn);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); 
+  const [name, setName] = useState("");
+  const [, setCookie] = useCookies();
+  const [postComplete, setPostComplete] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
-
     const reqData = { name, email, password };
 
     axios
       .post(`${url}/users`, reqData)
       .then((response) => {
         // POST リクエストの結果を取得
-        const data = response.data;
-        console.log(data);
+        const token = response.reqData;
+        dispatch(signIn());
+        setCookie('token', token);
+        console.log(token);
         setPostComplete(true);
-
         // サインアップ成功後の処理を呼び出す
-        handleSignUpSuccess();
+        navigate("/");
       })
       .catch((error) => {
-        console.error("APIリクエストエラー", error);
+        if (error.response && error.response.status === 409) {
+          // ステータスコード409の場合、ユーザーがすでに登録されているとみなす
+          setError("すでに登録済みです。");
+        }else{
+          console.error("APIリクエストエラー", error);
+        }
       });
-  };
-
-  // サインアップ成功後の処理
-  const handleSignUpSuccess = () => {
-    // リダイレクト
-    navigate("/");
+      if (auth) {
+        navigate('/');
+        return null; // または適切なコンポーネントを返す
+      }
   };
 
   const handleUsernameChange = (event) => {
@@ -92,6 +102,7 @@ export function SignUp() {
           />
         </div>
         <button onClick={handleSignIn}>サインアップ</button>
+        {error && <div className="error-message">{error}</div>}
       </form>
       {postComplete && <div id="result">{}</div>}
     </div>

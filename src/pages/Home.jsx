@@ -10,7 +10,7 @@ import "./home.scss";
 export function Home() {
   return (
     <div>
-      <header>書籍レビュー</header>
+      <header className="header">書籍レビュー</header>
       <h1>書籍一覧</h1>
       <SignOut />
     </div>
