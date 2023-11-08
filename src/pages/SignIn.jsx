@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from '../authSlice';
+import "./signin.scss";
 const url = "https://railway.bookreview.techtrain.dev";
 
 export function SignIn() {
@@ -49,34 +50,38 @@ export function SignIn() {
 
   return (
     <div>
-      <h1>サインイン</h1>
+      <main className='signin'>
+      <h1 className='title'>サインイン</h1>
       <p className="error-message">{errorMessage}</p>
       <form id="login-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">メールアドレス:</label>
           <input
             type="email"
+            className="email-input"
             id="email"
             name="email"
             value={email}
             onChange={handleEmailChange}
             required
-          />
+            />
         </div>
         <div>
           <label htmlFor="password">パスワード:</label>
           <input
             type="password"
             id="password"
+            className="password-input"
             name="password"
             value={password}
             onChange={handlePasswordChange}
             required
-          />
+            />
         </div>
-        <button type="button" onClick={handleSubmit}>サインイン</button>
+        <button  className="signin-button" onClick={handleSubmit}>サインイン</button>
       </form>
       {/* {postComplete && <div id="result">{}</div>} */}
+      </main>
     </div>
   );
 }

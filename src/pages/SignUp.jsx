@@ -4,6 +4,7 @@ import { useCookies } from 'react-cookie';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { signIn } from '../authSlice';
+import "./signup.scss";
 const url = "https://railway.bookreview.techtrain.dev";
 
 export function SignUp() {
@@ -25,7 +26,7 @@ export function SignUp() {
       .post(`${url}/users`, reqData)
       .then((response) => {
         // POST リクエストの結果を取得
-        const token = response.reqData;
+        const token = response.data;
         dispatch(signIn());
         setCookie('token', token);
         console.log(token);
@@ -66,11 +67,13 @@ export function SignUp() {
 
   return (
     <div>
-      <h1>サインアップ</h1>
+      <main className='signup'>
+      <h1 className='title'>サインアップ</h1>
       <form id="login-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">ユーザー名:</label>
           <input
+          className='name-input'
             type="text"
             id="name"
             name="name"
@@ -82,6 +85,7 @@ export function SignUp() {
         <div>
           <label htmlFor="email">メールアドレス:</label>
           <input
+          className='email-input'
             type="email"
             id="email"
             name="email"
@@ -93,6 +97,7 @@ export function SignUp() {
         <div>
           <label htmlFor="password">パスワード:</label>
           <input
+          className='password-input'
             type="password"
             id="password"
             name="password"
@@ -101,10 +106,11 @@ export function SignUp() {
             required
           />
         </div>
-        <button onClick={handleSignIn}>サインアップ</button>
+        <button className="signup-button" onClick={handleSignIn}>サインアップ</button>
         {error && <div className="error-message">{error}</div>}
       </form>
       {postComplete && <div id="result">{}</div>}
+      </main>
     </div>
   );
 }

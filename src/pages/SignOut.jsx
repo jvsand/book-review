@@ -18,9 +18,8 @@ function SignOut() {
 
   return (
     <div>
-      <h1>サインアウト</h1>
       {auth ? (
-        <button type="button" onClick={handleSignOut}>
+        <button  className="signup-button" onClick={handleSignOut}>
           サインアウト
         </button>
       ) : (

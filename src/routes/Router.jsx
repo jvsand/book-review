@@ -4,11 +4,10 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
 // import { NotFound } from "../pages/NotFound";
 import { SignUp } from "../pages/SignUp";
-import SignIn from "../pages/SignIn";
+import { SignIn } from "../pages/SignIn";
 // import { NewTask } from '../pages/NewTask';
 // import { NewList } from '../pages/NewList';
 // import { EditTask } from '../pages/EditTask';
-// import { SignUp } from "../pages/SignUp";
 // import { EditList } from '../pages/EditList';
 
 export function Router() {

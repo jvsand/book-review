@@ -19,13 +19,13 @@ describe('ログインフォームのテスト', () => {
     cy.get('button').click();
     cy.get('.error-message').should('contain', 'すでに登録済みです。');
   });
+  
   it('サインインからHome画面の確認', () => {
     cy.visit('http://localhost:3000/');
 
     cy.get('#email').type('ss1@example.com');
     cy.get('#password').type('ss1');
     cy.get('button').click();
-    // cy.get('button').click();
-    // cy.get('.header').should('contain', 'すでに登録済みです。');
+
   });
 });
