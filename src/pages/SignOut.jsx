@@ -1,8 +1,8 @@
 import React from "react";
-import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux/es/exports';
+import { useCookies } from "react-cookie";
+import { useSelector, useDispatch } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
-import { signOut } from '../authSlice';
+import { signOut } from "../authSlice";
 
 function SignOut() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -12,14 +12,14 @@ function SignOut() {
 
   const handleSignOut = () => {
     dispatch(signOut());
-    removeCookie('token');
-    navigate('/signin');
+    removeCookie("token");
+    navigate("/signin");
   };
 
   return (
     <div>
       {auth ? (
-        <button  className="signup-button" onClick={handleSignOut}>
+        <button className="signup-button" onClick={handleSignOut}>
           サインアウト
         </button>
       ) : (

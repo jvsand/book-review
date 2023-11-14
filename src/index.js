@@ -1,10 +1,10 @@
 import React from "react";
-import { createRoot } from 'react-dom/client';
+import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { Provider } from 'react-redux';
-import { CookiesProvider } from 'react-cookie';
-import { store } from './store';
+import { Provider } from "react-redux";
+import { CookiesProvider } from "react-cookie";
+import { store } from "./store";
 const root = createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
