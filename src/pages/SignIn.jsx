@@ -1,41 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import { useCookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { signIn } from '../authSlice';
 const url = "https://railway.bookreview.techtrain.dev";
 
 export function SignIn() {
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [postComplete, setPostComplete] = useState(false);
+  const auth = useSelector((state) => state.auth.isSignIn);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState();
+  const [, setCookie] = useCookies();
+  // const [postComplete, setPostComplete] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const reqData = { email, password };
     axios
-      .post(`${url}/sigin`, reqData)
+      .post(`${url}/signin`, { email, password })
       .then((response) => {
         // POST リクエストの結果を取得
-        const data = response.data;
-        console.log(data);
-        
-        // サインイン成功時の処理
-        if (data.token) {
-          // ユーザーセッションを管理する方法に応じて、認証トークンを保存する
-          // 例: ローカルストレージに保存
-          localStorage.setItem("authToken", data.token);
-
-          // リダイレクト
-          navigate("/");
-        } else {
-          console.error("サインインに失敗しました");
-        }
-        setPostComplete(true);
+        setCookie('token', response.data.token);
+        console.log(response.data);
+        dispatch(signIn());
+        navigate('/');
+        // setPostComplete(true);
       })
       .catch((error) => {
-        console.error("APIリクエストエラー", error);
+        setErrorMessage(`サインインに失敗しました。${error}`);
+        // console.error("APIリクエストエラー", error);
       });
   };
+  useEffect(() => {
+    if (auth) {
+      navigate('/');
+    }
+  }, [auth, navigate]);
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -45,14 +47,10 @@ export function SignIn() {
     setEmail(event.target.value);
   };
 
-  const handleSignIn = (event) => {
-    event.preventDefault();
-    handleSubmit(event);
-  };
-
   return (
     <div>
       <h1>サインイン</h1>
+      <p className="error-message">{errorMessage}</p>
       <form id="login-form" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">メールアドレス:</label>
@@ -76,9 +74,9 @@ export function SignIn() {
             required
           />
         </div>
-        <button onClick={handleSignIn}>サインイン</button>
+        <button type="button" onClick={handleSubmit}>サインイン</button>
       </form>
-      {postComplete && <div id="result">{}</div>}
+      {/* {postComplete && <div id="result">{}</div>} */}
     </div>
   );
 }
