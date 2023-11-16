@@ -1,15 +1,9 @@
 import React from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
-// import { NotFound } from "../pages/NotFound";
 import { SignUp } from "../pages/SignUp";
-import SignIn from "../pages/SignIn";
-// import { NewTask } from '../pages/NewTask';
-// import { NewList } from '../pages/NewList';
-// import { EditTask } from '../pages/EditTask';
-// import { SignUp } from "../pages/SignUp";
-// import { EditList } from '../pages/EditList';
+import { SignIn } from "../pages/SignIn";
 
 export function Router() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -17,10 +11,8 @@ export function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-        <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
-        {/* <Route path="/signup" element={<SignUp />} /> */}
+        <Route path="/signup" element={<SignUp />} />
         {auth ? (
           <>
             <Route path="/" element={<Home />} />
