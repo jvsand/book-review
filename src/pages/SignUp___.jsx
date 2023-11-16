@@ -9,80 +9,86 @@ import Compressor from "image-compressor.js";
 
 const url = "https://railway.bookreview.techtrain.dev";
 
-export function SignUp() {
+const SignUp = () => {
   const auth = useSelector((state) => state.auth.isSignIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [, setCookie] = useCookies();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [name, setName] = useState("");
-  const [, setCookie] = useCookies();
   const [photo, setPhoto] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  // 外に出しておくこと
-  useEffect(()=>{
-    if (auth) {
-      navigate("/");
-    }
-  })
-  const resizeImage = (file, maxWidth, maxHeight) => {
-    return new Promise((resolve, reject) => {
-      const compressor = new Compressor();
+  const [postComplete, setPostComplete] = useState(false);
 
-      compressor.compress(file, {
-        maxWidth,
-        maxHeight,
-        success(result) {
-          resolve(result);
-        },
-        error(err) {
-          reject(err);
-        },
-      });
-    });
-  };
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
-    if (!name || !email || !password) {
-      setError("空欄があります。");
-      return;
-    }
+  useEffect(() => {
+    const handleSignUp = async () => {
+      try {
+        const response = await axios.post(`${url}/users`, {
+          name,
+          email,
+          password,
+        });
+        const token = response.data.token;
 
-    const reqData = { name, email, password };
-    try {
-      const response = await axios.post(`${url}/users`, reqData);
-      const token = response.data.token;
-      dispatch(signIn());
-      setCookie("token", token);
+        dispatch(signIn());
+        setCookie("token", token);
 
-      const resizedImage = await resizeImage(photo, 300, 300);
-      const formData = new FormData();
-      formData.append("icon", resizedImage, resizedImage.name);
+        const resizedImage = await resizeImage(photo, 300, 300);
+        const formData = new FormData();
+        formData.append("icon", resizedImage, resizedImage.name);
 
-      const iconResponse = await axios.post(`${url}/uploads`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      if (iconResponse.status === 200) {
-        navigate("/");
-        console.log("画像登録完了", iconResponse);
-      } else {
-        console.error("Upload failed");
-        setError("アップロードに失敗しました。");
+        const iconResponse = await axios.post(`${url}/uploads`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        if (iconResponse.status === 200) {
+          navigate("/");
+          console.log("画像登録完了", iconResponse);
+        } else {
+          console.error("Upload failed");
+          setError("アップロードに失敗しました。");
+        }
+
+        setPostComplete(true);
+      } catch (err) {
+        handleApiError(err);
       }
-      // setPostComplete(true);
-    } catch (err) {
+    };
+
+    const handleApiError = (err) => {
       if (err.response && err.response.status === 409) {
-        // ステータスコード409の場合、ユーザーがすでに登録されているとみなす
         setError("すでに登録済みです。");
       } else {
         console.error("APIリクエストエラー", err);
       }
+    };
+
+    const resizeImage = async (file, maxWidth, maxHeight) => {
+      return new Promise((resolve, reject) => {
+        const compressor = new Compressor();
+
+        compressor.compress(file, {
+          maxWidth,
+          maxHeight,
+          success(result) {
+            resolve(result);
+          },
+          error(err) {
+            reject(err);
+          },
+        });
+      });
+    };
+
+    if (name && email && password && photo) {
+      handleSignUp();
     }
-  };
+  }, [name, email, password, photo, dispatch, setCookie, navigate]);
 
   const handleUsernameChange = (event) => {
     setName(event.target.value);
@@ -174,9 +180,10 @@ export function SignUp() {
             サインアップ
           </button>
         </form>
+        {postComplete && <div id="result">登録できました</div>}
       </main>
     </div>
   );
-}
+};
 
 export default SignUp;
