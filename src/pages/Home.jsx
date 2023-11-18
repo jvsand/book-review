@@ -3,6 +3,7 @@ import axios from "axios";
 import SignOut from "./SignOut";
 import { useCookies } from "react-cookie";
 import "./home.scss";
+import { Header } from "../components/Header";
 import Pagination from './Pagination';
 const url = "https://railway.bookreview.techtrain.dev";
 
@@ -12,7 +13,7 @@ export function Home() {
   const [cookies] = useCookies();
 
   const [currentPage, setCurrentPage] = useState(0); 
-  const booksPerPage = 3; // 1ページあたりのアイテム数
+  const booksPerPage = 4; // 1ページあたりのアイテム数
 
   // ページ読み込みでの一覧取得
   useEffect(() => {
@@ -41,7 +42,7 @@ export function Home() {
 
   return (
     <div className="home">
-      <h1 className="home__title">書籍一覧</h1>
+      <Header />
       <div className="home__book-list">
       {/* ここに書籍一覧を表示するロジックを追加 */}
       <ul className="book-list__items">

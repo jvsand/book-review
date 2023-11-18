@@ -1,7 +1,7 @@
 
 import React from 'react';
 import ReactPaginate from 'react-paginate';
-import "./home.scss";
+import "./pagination.scss";
 
 const Pagination = ({ pageCount, handlePageClick }) => {
   return (
