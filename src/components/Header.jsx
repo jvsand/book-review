@@ -1,32 +1,19 @@
-import React from 'react';
-import { useCookies } from 'react-cookie';
-import { useSelector, useDispatch } from 'react-redux/es/exports';
-import { useNavigate } from 'react-router-dom';
-import { signOut } from '../authSlice';
-import './header.scss';
-
+import React from "react";
+import "./header.scss";
+import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
-  const auth = useSelector((state) => state.auth.isSignIn);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [, , removeCookie] = useCookies();
-  const handleSignOut = () => {
-    dispatch(signOut());
-    removeCookie('token');
-    navigate('/signin');
-  };
-
+  const { pathname } = useLocation();
   return (
     <header className="header">
-      <h1 className="home__title">書籍一覧</h1>
-      {auth ? (
-        <button onClick={handleSignOut} className="sign-out-button">
-          サインアウト
-        </button>
-      ) : (
-        <></>
-      )}
+      <h1 className="home__title">
+        書籍一覧
+        {pathname === "/profile" ? (
+          <Link to="/">Homeへ</Link>
+        ) : (
+          <Link to="/profile">ユーザー情報を編集</Link>
+        )}
+      </h1>
     </header>
   );
 }

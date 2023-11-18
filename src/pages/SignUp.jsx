@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { signIn } from "../authSlice";
 import "./signup.scss";
 import Compressor from "image-compressor.js";
-
-const url = "https://railway.bookreview.techtrain.dev";
+import { url } from "../env";
 
 export function SignUp() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -21,11 +20,11 @@ export function SignUp() {
   const [photo, setPhoto] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   // 外に出しておくこと
-  useEffect(()=>{
+  useEffect(() => {
     if (auth) {
       navigate("/");
     }
-  })
+  });
   const resizeImage = (file, maxWidth, maxHeight) => {
     return new Promise((resolve, reject) => {
       const compressor = new Compressor();
