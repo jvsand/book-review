@@ -5,7 +5,7 @@ import "./home.scss";
 import { Header } from "../components/Header";
 import Pagination from "./Pagination";
 import SignOut from "./SignOut";
-const url = "https://railway.bookreview.techtrain.dev";
+import { url } from "../env";
 
 export function Home() {
   const [, setErrorMessage] = useState("");
@@ -17,19 +17,32 @@ export function Home() {
 
   // ページ読み込みでの一覧取得
   useEffect(() => {
-    axios
-      .get(`${url}/books`, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`,
-        },
-      })
-      .then((res) => {
-        console.log("一覧を表示します", cookies.token);
-        setBooks(res.data);
-      })
-      .catch((err) => {
-        setErrorMessage(`タスクの取得に失敗しました。${err}`);
-      });
+    const config = cookies.token;
+    if (config) {
+      axios
+        .get(`${url}/books`, {
+          headers: {
+            authorization: `Bearer ${config}`,
+          },
+        })
+        .then((res) => {
+          console.log("一覧を表示します", config);
+          setBooks(res.data);
+        })
+        .catch((err) => {
+          setErrorMessage(`タスクの取得に失敗しました。${err}`);
+        });
+    } else {
+      axios
+        .get(`${url}/public/books`)
+        .then((res) => {
+          console.log("一覧を表示します", config);
+          setBooks(res.data);
+        })
+        .catch((err) => {
+          setErrorMessage(`タスクの取得に失敗しました。${err}`);
+        });
+    }
   }, [cookies.token]);
 
   const handlePageClick = (data) => {

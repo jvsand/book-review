@@ -32,11 +32,9 @@ export function SignIn() {
         console.log(response.data);
         dispatch(signIn());
         navigate("/");
-        // setPostComplete(true);
       })
       .catch((error) => {
         setErrorMessage(`サインインに失敗しました。${error}`);
-        // console.error("APIリクエストエラー", error);
       });
   };
   useEffect(() => {
@@ -88,7 +86,6 @@ export function SignIn() {
             サインイン
           </button>
         </form>
-        {/* {postComplete && <div id="result">{}</div>} */}
       </main>
     </div>
   );

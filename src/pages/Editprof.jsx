@@ -8,68 +8,74 @@ import { url } from "../env";
 export function Editprof() {
   const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
-  const [cookies,setCookie] = useCookies();
+  const [cookies, setCookie] = useCookies();
 
-
-  // ページ読み込みでの一覧取得
-  useEffect(() => {
-      axios
-        .get(`${url}/users`, {
-          headers: {
-            authorization: `Bearer ${cookies.token}`,
-          },
-        })
-        .then((res) => {
-          const user_info=res.data;
-          console.log("ユーザー情報を表示します", user_info);
-          setName(user_info.name);
-        })
-        .catch((err) => {
-          setErrorMessage(`ユーザー情報の取得に失敗しました。${err}`);
-        });
-      }, [cookies.token]);
-      
-      const handleSubmit = (event) => {
-        event.preventDefault();
-        
-        axios
-        .put(`${url}/users`,{
-          headers: {
-            authorization: `Bearer ${cookies.token}`,
-          },
-          name
-        } )
-        .then((response) => {
-          // PUT リクエストの結果を取得
-          setCookie("token", response.data.token);
-          console.log("更新が完了しました。",response.data);
-      })
-      .catch((error) => {
-        setErrorMessage(`更新に失敗しました。${error}`);
-        // console.error("APIリクエストエラー", error);
+  const fetchUserInfo = async () => {
+    try {
+      const res = await axios.get(`${url}/users`, {
+        headers: {
+          authorization: `Bearer ${cookies.token}`,
+        },
       });
+
+      const user_info = res.data;
+      console.log("ユーザー情報を表示します", user_info);
+      setName(user_info.name);
+    } catch (err) {
+      setErrorMessage(`ユーザー情報の取得に失敗しました。${err}`);
+    }
   };
-    return (
-      <div className="edit">
-        <Header />
-        <div>
-            <form id="edit-profile" >
-            <label htmlFor="name">ユーザー名:</label>
-            <input
-              className="name-input"
-              type="text"
-              id="name"
-              name="name"
-              value={name}
-              onChange={(e)=>setName(e.target.value)}
-              required
-            />
-          <button className="edit-button" onClick={handleSubmit}>
-            更新
-          </button>
-          </form>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+  // tokenが変更した時ページ読み込みでの一覧取得
+  useEffect(() => {
+    fetchUserInfo();
+  }, [cookies.token]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `${url}/users`,
+        { name },
+        {
+          headers: {
+            authorization: `Bearer ${cookies.token}`,
+          },
+        },
+      );
+
+      // PUT リクエストの結果を取得
+      await setCookie("token", response.data.token);
+      console.log(`更新が完了しました`);
+      // await fetchUserInfo();
+    } catch (error) {
+      setErrorMessage(`更新に失敗しました。${error}`);
+    }
+  };
+
+  return (
+    <div className="edit">
+      <Header />
+      <div>
+        <form id="edit-profile">
+          <label htmlFor="name">ユーザー名:</label>
+          <input
+            className="name-input"
+            type="text"
+            id="name"
+            name="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <div>
+            <button className="edit-button" onClick={handleSubmit}>
+              更新
+            </button>
           </div>
+        </form>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
       </div>
-    );
-  }
+    </div>
+  );
+}

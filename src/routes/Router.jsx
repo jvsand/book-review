@@ -12,16 +12,12 @@ export function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         {auth ? (
           <>
-            <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Editprof />} />
-            {/* <Route path="/task/new" element={<NewTask />} />
-            <Route path="/list/new" element={<NewList />} />
-            <Route path="/lists/:listId/tasks/:taskId" element={<EditTask />} />
-            <Route path="/lists/:listId/edit" element={<EditList />} /> */}
           </>
         ) : (
           <Route path="/" element={<Navigate to="/signin" />} />
