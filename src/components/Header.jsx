@@ -35,6 +35,20 @@ export function Header() {
       <h1 className="home__title">
         書籍一覧
         <div className="goto-home">
+          <div className="conform-name">
+            {auth ? (
+              pathname === "/profile" ? (
+                <></>
+              ) : (
+                <label htmlFor="name">
+                  ユーザー名:
+                  <span className="name-text">{name}</span>
+                </label>
+              )
+            ) : (
+              <></>
+            )}
+          </div>
           {auth ? (
             pathname === "/profile" ? (
               <Link to="/">Homeへ</Link>
@@ -46,20 +60,6 @@ export function Header() {
           )}
         </div>
       </h1>
-      <div className="conform-name">
-        {auth ? (
-          pathname === "/profile" ? (
-            <></>
-          ) : (
-            <label htmlFor="name">
-              ユーザー名:
-              <span className="name-text">{name}</span>
-            </label>
-          )
-        ) : (
-          <></>
-        )}
-      </div>
     </header>
   );
 }

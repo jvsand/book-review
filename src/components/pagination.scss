@@ -4,6 +4,7 @@
  color: #ffffff;
  background-color: green;
 }
+
 .book-item {
   list-style-type: none;
   height: auto;
@@ -13,15 +14,19 @@
   font-size: large;
   border: solid 4px #ffffff;
 }
+
 .book-item__title{
   font-weight:bold;
 }
+
 .book-item__review{
  color:rgb(190, 0, 0)
 }
+
 .book-item__detail{
   color:rgb(0, 190, 13)
 }
+
 .book-item__url{
   color: #535453;
  font-size: 5px;

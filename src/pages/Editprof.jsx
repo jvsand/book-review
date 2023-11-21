@@ -7,8 +7,9 @@ import { url } from "../env";
 
 export function Editprof() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [name, setName] = useState("");
-  const [cookies, setCookie] = useCookies();
+  const [cookies] = useCookies();
 
   const fetchUserInfo = async () => {
     try {
@@ -35,7 +36,7 @@ export function Editprof() {
     event.preventDefault();
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `${url}/users`,
         { name },
         {
@@ -46,9 +47,8 @@ export function Editprof() {
       );
 
       // PUT リクエストの結果を取得
-      await setCookie("token", response.data.token);
       console.log(`更新が完了しました`);
-      // await fetchUserInfo();
+      setSuccessMessage(`ユーザー名を"${name}"に更新できました`);
     } catch (error) {
       setErrorMessage(`更新に失敗しました。${error}`);
     }
@@ -74,6 +74,9 @@ export function Editprof() {
             </button>
           </div>
         </form>
+        {successMessage && (
+          <div className="success-message">{successMessage}</div>
+        )}
         {errorMessage && <div className="error-message">{errorMessage}</div>}
       </div>
     </div>
