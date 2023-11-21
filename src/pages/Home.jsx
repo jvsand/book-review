@@ -14,7 +14,7 @@ export function Home() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const booksPerPage = 10; // 1ページあたりのアイテム数
-  const showPages = 60; // 全てのアイテム数
+  const allReviews = 60; // 全てのアイテム数
 
   // ページ読み込みでの一覧取得
   useEffect(() => {
@@ -29,7 +29,7 @@ export function Home() {
             },
             params: {
               offset: currentPage * booksPerPage,
-              limit: showPages,
+              limit: allReviews,
             },
           },
         );
@@ -74,7 +74,7 @@ export function Home() {
 
       {/* react-paginate コンポーネントの設置 */}
       <Pagination
-        pageCount={Math.ceil(showPages / booksPerPage)}
+        pageCount={Math.ceil(allReviews / booksPerPage)}
         handlePageClick={handlePageClick}
       />
       <div className="page-range">

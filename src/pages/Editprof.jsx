@@ -9,6 +9,7 @@ export function Editprof() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [name, setName] = useState("");
+  const [currentIcon, setCurrentIcon] = useState("");
   const [cookies] = useCookies();
 
   const fetchUserInfo = async () => {
@@ -18,10 +19,11 @@ export function Editprof() {
           authorization: `Bearer ${cookies.token}`,
         },
       });
-
       const user_info = res.data;
       console.log("ユーザー情報を表示します", user_info);
       setName(user_info.name);
+      setCurrentIcon(user_info.iconUrl);
+
     } catch (err) {
       setErrorMessage(`ユーザー情報の取得に失敗しました。${err}`);
     }
@@ -45,7 +47,6 @@ export function Editprof() {
           },
         },
       );
-
       // PUT リクエストの結果を取得
       console.log(`更新が完了しました`);
       setSuccessMessage(`ユーザー名を"${name}"に更新できました`);
@@ -68,6 +69,26 @@ export function Editprof() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          <div>
+          <label htmlFor="photo">登録済みアイコン:</label>
+          <div>
+            <input
+              type="file"
+              id="photo"
+              name="photo"
+              accept="image/*"
+              // onChange={handlePhotoChange}
+              required
+            />
+            {/* {previewImage && ( */}
+              <img
+                src={currentIcon}
+                alt="登録済みアイコン"
+                className="uploaded-image"
+              />
+            {/* )} */}
+          </div>
+          </div>
           <div>
             <button className="edit-button" onClick={handleSubmit}>
               更新
