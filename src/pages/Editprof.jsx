@@ -10,7 +10,9 @@ export function Editprof() {
   const [successMessage, setSuccessMessage] = useState("");
   const [name, setName] = useState("");
   const [currentIcon, setCurrentIcon] = useState("");
+  const [/*editIcon*/, setEditIcon] = useState("");
   const [cookies] = useCookies();
+  const [previewImage, setPreviewImage] = useState(null);
 
   const fetchUserInfo = async () => {
     try {
@@ -49,9 +51,23 @@ export function Editprof() {
       );
       // PUT リクエストの結果を取得
       console.log(`更新が完了しました`);
-      setSuccessMessage(`ユーザー名を"${name}"に更新できました`);
+      setSuccessMessage(`ユーザー名を"${name}"に更新できました。\nアイコンを"${previewImage}"に更新できました`);
     } catch (error) {
       setErrorMessage(`更新に失敗しました。${error}`);
+    }
+  };
+
+  const handlePhotoChange = (event) => {
+    const selectedPhoto = event.target.files[0];
+
+    if (selectedPhoto) {
+      setEditIcon(selectedPhoto);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(selectedPhoto);
     }
   };
 
@@ -72,22 +88,30 @@ export function Editprof() {
           <div>
           <label htmlFor="photo">登録済みアイコン:</label>
           <div>
-            <input
-              type="file"
-              id="photo"
-              name="photo"
-              accept="image/*"
-              // onChange={handlePhotoChange}
-              required
-            />
-            {/* {previewImage && ( */}
               <img
                 src={currentIcon}
                 alt="登録済みアイコン"
                 className="uploaded-image"
               />
-            {/* )} */}
           </div>
+          <label htmlFor="photo">変更後アイコン:<input
+              type="file"
+              id="photo"
+              name="photo"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              required
+            /></label>
+          <div>
+
+            </div>
+            {previewImage && (
+              <img
+                src={previewImage}
+                alt="アップロードされたアイコン"
+                className="uploaded-image"
+              />
+            )}
           </div>
           <div>
             <button className="edit-button" onClick={handleSubmit}>
