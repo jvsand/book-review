@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { SignUp } from "../pages/SignUp";
 import { SignIn } from "../pages/SignIn";
+import { Editprof } from "../pages/Editprof";
 
 export function Router() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -11,15 +12,12 @@ export function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         {auth ? (
           <>
-            <Route path="/" element={<Home />} />
-            {/* <Route path="/task/new" element={<NewTask />} />
-            <Route path="/list/new" element={<NewList />} />
-            <Route path="/lists/:listId/tasks/:taskId" element={<EditTask />} />
-            <Route path="/lists/:listId/edit" element={<EditList />} /> */}
+            <Route path="/profile" element={<Editprof />} />
           </>
         ) : (
           <Route path="/" element={<Navigate to="/signin" />} />

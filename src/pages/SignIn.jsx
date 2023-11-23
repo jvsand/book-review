@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../authSlice";
 import "./signin.scss";
-const url = "https://railway.bookreview.techtrain.dev";
+import { url } from "../env";
 
 export function SignIn() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -32,11 +32,9 @@ export function SignIn() {
         console.log(response.data);
         dispatch(signIn());
         navigate("/");
-        // setPostComplete(true);
       })
       .catch((error) => {
         setErrorMessage(`サインインに失敗しました。${error}`);
-        // console.error("APIリクエストエラー", error);
       });
   };
   useEffect(() => {
@@ -88,7 +86,6 @@ export function SignIn() {
             サインイン
           </button>
         </form>
-        {/* {postComplete && <div id="result">{}</div>} */}
       </main>
     </div>
   );
