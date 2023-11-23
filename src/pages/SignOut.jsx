@@ -3,6 +3,7 @@ import { useCookies } from "react-cookie";
 import { useSelector, useDispatch } from "react-redux/es/exports";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "../authSlice";
+import "./signout.scss";
 
 function SignOut() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -19,7 +20,7 @@ function SignOut() {
   return (
     <div>
       {auth ? (
-        <button className="signup-button" onClick={handleSignOut}>
+        <button className="signout-button" onClick={handleSignOut}>
           サインアウト
         </button>
       ) : (
