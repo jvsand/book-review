@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { SignUp } from "../pages/SignUp";
 import { SignIn } from "../pages/SignIn";
+import { NewReview } from "../pages/NewReview";
 import { Editprof } from "../pages/Editprof";
 
 export function Router() {
@@ -18,6 +19,7 @@ export function Router() {
         {auth ? (
           <>
             <Route path="/profile" element={<Editprof />} />
+            <Route path="/newreview" element={<NewReview />} />
           </>
         ) : (
           <Route path="/" element={<Navigate to="/signin" />} />

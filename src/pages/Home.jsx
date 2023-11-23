@@ -5,7 +5,8 @@ import "./home.scss";
 import { Header } from "../components/Header";
 import Pagination from "../components/Pagination";
 import SignOut from "./SignOut";
-import { url } from "../env";
+import NewReview from "./NewReview";
+import { baseUrl } from "../env";
 
 export function Home() {
   const [, setErrorMessage] = useState("");
@@ -22,7 +23,7 @@ export function Home() {
       try {
         const config = cookies.token;
         const res = await axios.get(
-          config ? `${url}/books` : `${url}/public/books`,
+          config ? `${baseUrl}/books` : `${baseUrl}/public/books`,
           {
             headers: {
               authorization: config ? `Bearer ${config}` : undefined,
@@ -58,14 +59,14 @@ export function Home() {
   return (
     <div className="home">
       <Header />
+      <NewReview />
       <div className="home__book-list"></div>
       {/* ここに書籍一覧を表示するロジックを追加 */}
       <ul className="book-list__items">
         {books.map((book) => (
           <li className="book-item" key={book.id}>
-            {book.title}
             <span className="book-item__title">title:{book.title}</span>
-            <p className="book-item__review">review: {book.review}</p>
+            <p className="book-item__review">review: ★{book.review}</p>
             <p className="book-item__detail">detail: {book.detail}</p>
             <p className="book-item__url">url: {book.url}</p>
           </li>

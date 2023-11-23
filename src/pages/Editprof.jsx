@@ -3,12 +3,12 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import "./editprof.scss";
 import { Header } from "../components/Header";
-import { url } from "../env";
+import { baseUrl } from "../env";
 // import resizeImage from "../components/ResizeImage";
 
 export function Editprof() {
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage,setSuccessMessage ] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [name, setName] = useState("");
   const [currentIcon, setCurrentIcon] = useState("");
   const [cookies] = useCookies();
@@ -19,9 +19,9 @@ export function Editprof() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        await axios.put(
-      // const response = await axios.put(
-        `${url}/users`,
+      await axios.put(
+        // const response = await axios.put(
+        `${baseUrl}/users`,
         { name },
         {
           headers: {
@@ -39,7 +39,7 @@ export function Editprof() {
       // const iconResponse = await axios.post(`${url}/uploads`, formData, {
       //   headers: {
       //     Authorization: `Bearer ${token}`,
-      //     "Content-Type": "multipart/form-data",
+      //     "Content-Type": "multipart/form-data",//ファイルのアップロードの場合
       //   },
       // });
       // if (iconResponse.status === 200) {
@@ -52,13 +52,13 @@ export function Editprof() {
       // setPostComplete(true);
       setSuccessMessage(`ユーザー名の更新ができました`);
     } catch (err) {
-        console.error("APIリクエストエラー", err);
-      }
-    };
+      console.error("APIリクエストエラー", err);
+    }
+  };
 
   const fetchUserInfo = async () => {
     try {
-      const res = await axios.get(`${url}/users`, {
+      const res = await axios.get(`${baseUrl}/users`, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },

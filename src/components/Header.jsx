@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import "./header.scss";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux/es/exports";
-import { url } from "../env";
+import { baseUrl } from "../env";
 
 export function Header() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -15,7 +15,7 @@ export function Header() {
 
   useEffect(() => {
     axios
-      .get(`${url}/users`, {
+      .get(`${baseUrl}/users`, {
         headers: {
           authorization: `Bearer ${cookies.token}`,
         },
@@ -51,7 +51,7 @@ export function Header() {
           </div>
           {auth ? (
             pathname === "/profile" ? (
-              <Link to="/">Homeへ</Link>
+              <Link to="/">一覧画面へ</Link>
             ) : (
               <Link to="/profile">ユーザー情報を編集</Link>
             )

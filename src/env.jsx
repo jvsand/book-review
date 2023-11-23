@@ -1,1 +1,1 @@
-export const url = "https://railway.bookreview.techtrain.dev";
+export const baseUrl = "https://railway.bookreview.techtrain.dev";
