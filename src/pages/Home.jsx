@@ -14,7 +14,7 @@ export function Home() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const booksPerPage = 10; // 1ページあたりのアイテム数
-  const allReviews = 60; // 全てのアイテム数
+  const allReviews = 60; // 全てのアイテム数 ←削除する
 
   // ページ読み込みでの一覧取得
   useEffect(() => {
