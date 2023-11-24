@@ -7,11 +7,11 @@ import { Header } from "../components/Header";
 import { baseUrl } from "../env";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
-import "./viewreview.scss";
+import "./editreview.scss";
 import { css } from "@emotion/react";
 import { ClipLoader } from "react-spinners";
 
-export function ViewReview() {
+export function EditReview() {
   // const auth = useSelector((state) => state.auth.isSignIn);
   // const [successMessage, setSuccessMessage] = useState("");
   // const { pathname } = useLocation();
@@ -44,6 +44,24 @@ export function ViewReview() {
       });
   }, [cookies.token]);
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
+
+  // const reqData = { title, url, detail, review };
+  // try {
+  //   await axios.post(`${baseUrl}/books`, reqData, {
+  //     headers: {
+  //       authorization: `Bearer ${cookies.token}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   setSuccessMessage(`レビュー登録ができました`);
+  // } catch (err) {
+  //   setErrorMessage("APIリクエストエラー");
+  //   console.error("APIリクエストエラー", err);
+  // }
+  // };
+
   return (
     <div className="home">
       <Header />
@@ -59,18 +77,56 @@ export function ViewReview() {
         />
       ) : (
         <>
+          <h1 className="title">レビュー詳細</h1>
+          <form>
+
           <label>タイトル</label>
-          <p>{title}</p>
+          <p>
+            <textarea
+              type="text"
+              // onChange={handleDetailChange}
+              className="book-title"
+              value={title}
+              />
+          </p>
           <label>詳細</label>
-          <p>{detail}</p>
+          <p>
+            <textarea
+              type="text"
+              // onChange={handleDetailChange}
+              className="book-detail"
+              value={detail}
+              />
+          </p>
           <label>レビュー</label>
-          <p>{review}</p>
+          <p>
+            <select
+              className="book-review"
+              id="review"
+              value={review}
+              // onChange={handleReviewChange}
+              >
+              <option value="5">5</option>
+              <option value="4">4</option>
+              <option value="3">3</option>
+              <option value="2">2</option>
+              <option value="1">1</option>
+            </select>
+          </p>
           <label>URL</label>
-          <p>{url}</p>
+          <p>
+            <textarea
+              type="text"
+              // onChange={handleDetailChange}
+              className="book-url"
+              value={url}
+              />
+          </p>
+          </form>
         </>
       )}
     </div>
   );
 }
 
-export default ViewReview;
+export default EditReview;

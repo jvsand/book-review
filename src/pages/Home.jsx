@@ -12,6 +12,7 @@ import { baseUrl } from "../env";
 export function Home() {
   const [, setErrorMessage] = useState("");
   const [books, setBooks] = useState([]);
+  const [, setConfig] = useState([]);
   const [cookies] = useCookies();
   const [currentPage, setCurrentPage] = useState(0);
   const booksPerPage = 10; // 1ページあたりのアイテム数
@@ -36,6 +37,7 @@ export function Home() {
         );
         console.log("一覧を表示します", config);
         setBooks(res.data);
+        setConfig(config);
       } catch (err) {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       }
@@ -86,12 +88,12 @@ export function Home() {
       {/* ここに書籍一覧を表示するロジックを追加 */}
       <ul className="book-list__items">
         {books.map((book) => (
-          <li
-            className="book-item"
-            key={book.id}
-            onClick={() => handleBookClick(book.id)}
-          >
-            <Link to={`/detail/${book.id}`} className="book-item-link">
+          <li className="book-item" key={book.id}>
+            <Link
+              to={`/detail/${book.id}`}
+              className="book-item-link"
+              onClick={() => handleBookClick(book.id)}
+            >
               <span className="book-item__title">title:{book.title}</span>
               <p className="book-item__review">review: ★{book.review}</p>
               <p className="book-item__detail">detail: {book.detail}</p>
