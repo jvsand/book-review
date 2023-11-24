@@ -44,6 +44,24 @@ export function ViewReview() {
       });
   }, [cookies.token]);
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
+
+  // const reqData = { title, url, detail, review };
+  // try {
+  //   await axios.post(`${baseUrl}/books`, reqData, {
+  //     headers: {
+  //       authorization: `Bearer ${cookies.token}`,
+  //       "Content-Type": "application/json",
+  //     },
+  //   });
+  //   setSuccessMessage(`レビュー登録ができました`);
+  // } catch (err) {
+  //   setErrorMessage("APIリクエストエラー");
+  //   console.error("APIリクエストエラー", err);
+  // }
+  // };
+
   return (
     <div className="home">
       <Header />
@@ -54,7 +72,7 @@ export function ViewReview() {
           css={css`
             @import "./viewreview.scss";
           `}
-          size={100}
+          size={150}
           loading={isLoading}
         />
       ) : (
@@ -69,6 +87,19 @@ export function ViewReview() {
           <p>{url}</p>
         </>
       )}
+      {/* <text
+            type="text"
+            // onChange={handleDetailChange}
+            className="book-title"
+            value={title}
+          /> */}
+
+      {/* <textarea
+            type="text"
+            // onChange={handleDetailChange}
+            className="book-detail"
+            value={detail}
+          /> */}
     </div>
   );
 }

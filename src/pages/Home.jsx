@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import "./home.scss";
-import { Link,  } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Header } from "../components/Header";
 import Pagination from "../components/Pagination";
 import SignOut from "./SignOut";
@@ -56,6 +56,28 @@ export function Home() {
     return `${start} - ${end} 件`; //11−20件
   };
 
+  const handleBookClick = async (bookId) => {
+    try {
+      const config = cookies.token;
+      await axios.post(
+        `${baseUrl}/logs`,
+        {
+          selectBookId: bookId,
+        },
+        {
+          headers: {
+            // authorization:  `Bearer ${config}`,
+            authorization: config ? `Bearer ${config}` : undefined,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      console.log("ログをPOSTしました");
+    } catch (err) {
+      console.error("ログのPOSTに失敗しました", err);
+    }
+  };
+
   return (
     <div className="home">
       <Header />
@@ -67,13 +89,13 @@ export function Home() {
           <li
             className="book-item"
             key={book.id}
+            onClick={() => handleBookClick(book.id)}
           >
-            <Link to={`/detail/${book.id}`}
-            className="book-item-link">
-            <span className="book-item__title">title:{book.title}</span>
-            <p className="book-item__review">review: ★{book.review}</p>
-            <p className="book-item__detail">detail: {book.detail}</p>
-            <p className="book-item__url">url: {book.url}</p>
+            <Link to={`/detail/${book.id}`} className="book-item-link">
+              <span className="book-item__title">title:{book.title}</span>
+              <p className="book-item__review">review: ★{book.review}</p>
+              <p className="book-item__detail">detail: {book.detail}</p>
+              <p className="book-item__url">url: {book.url}</p>
             </Link>
           </li>
         ))}
