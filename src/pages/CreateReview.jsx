@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux/es/exports";
 import { baseUrl } from "../env";
 
-export function NewReview() {
+export function CreateReview() {
   const auth = useSelector((state) => state.auth.isSignIn);
   const [successMessage, setSuccessMessage] = useState("");
   const { pathname } = useLocation();
@@ -18,14 +18,14 @@ export function NewReview() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
-    
+
     switch (true) {
-      case !title :
+      case !title:
         setErrorMessage("タイトルに空欄があります。");
         return;
-        case!detail:
-          setErrorMessage("詳細欄に空欄があります。");
-          return;
+      case !detail:
+        setErrorMessage("詳細欄に空欄があります。");
+        return;
       case !review:
         setErrorMessage("レビューに空欄があります。");
         return;
@@ -40,7 +40,7 @@ export function NewReview() {
     try {
       await axios.post(`${baseUrl}/books`, reqData, {
         headers: {
-          Authorization: `Bearer ${cookies.token}`,
+          authorization: `Bearer ${cookies.token}`,
           "Content-Type": "application/json",
         },
       });
@@ -135,12 +135,12 @@ export function NewReview() {
           </form>
         </>
       )}
-              {successMessage && (
-          <div className="success-message">{successMessage}</div>
-        )}
+      {successMessage && (
+        <div className="success-message">{successMessage}</div>
+      )}
       {errorMessage && <div className="error-message">{errorMessage}</div>}
     </header>
   );
 }
 
-export default NewReview;
+export default CreateReview;

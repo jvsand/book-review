@@ -4,8 +4,9 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { SignUp } from "../pages/SignUp";
 import { SignIn } from "../pages/SignIn";
-import { NewReview } from "../pages/NewReview";
+import { CreateReview } from "../pages/CreateReview";
 import { Editprof } from "../pages/Editprof";
+import { ViewReview } from "../pages/ViewReview";
 
 export function Router() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -19,7 +20,8 @@ export function Router() {
         {auth ? (
           <>
             <Route path="/profile" element={<Editprof />} />
-            <Route path="/newreview" element={<NewReview />} />
+            <Route path="/newreview" element={<CreateReview />} />
+            <Route path="/detail/:id" element={<ViewReview />} />
           </>
         ) : (
           <Route path="/" element={<Navigate to="/signin" />} />
