@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { Header } from "../components/Header";
-// import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { useSelector } from "react-redux/es/exports";
 import { baseUrl } from "../env";
 import { useParams } from "react-router-dom";
@@ -12,17 +12,16 @@ import { css } from "@emotion/react";
 import { ClipLoader } from "react-spinners";
 
 export function EditReview() {
-  // const auth = useSelector((state) => state.auth.isSignIn);
-  // const [successMessage, setSuccessMessage] = useState("");
-  // const { pathname } = useLocation();
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [cookies] = useCookies();
   const { id } = useParams();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
   const [url, setUrl] = useState("");
   const [review, setReview] = useState("5");
-  const [, setErrorMessage] = useState("");
 
   useEffect(() => {
     axios
@@ -44,23 +43,54 @@ export function EditReview() {
       });
   }, [cookies.token]);
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+  const handleDetailChange = (event) => {
+    setDetail(event.target.value);
+  };
+  const handleReviewChange = (event) => {
+    setReview(event.target.value);
+  };
+  const handleUrlChange = (event) => {
+    setUrl(event.target.value);
+  };
 
-  // const reqData = { title, url, detail, review };
-  // try {
-  //   await axios.post(`${baseUrl}/books`, reqData, {
-  //     headers: {
-  //       authorization: `Bearer ${cookies.token}`,
-  //       "Content-Type": "application/json",
-  //     },
-  //   });
-  //   setSuccessMessage(`レビュー登録ができました`);
-  // } catch (err) {
-  //   setErrorMessage("APIリクエストエラー");
-  //   console.error("APIリクエストエラー", err);
-  // }
-  // };
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
+
+    const reqData = { title, url, detail, review };
+    try {
+      await axios.put(`${baseUrl}/books/${id}`, reqData, {
+        headers: {
+          authorization: `Bearer ${cookies.token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setSuccessMessage(`レビュー登録ができました`);
+      navigate("/");
+    } catch (err) {
+      setErrorMessage("APIリクエストエラー");
+      console.error("APIリクエストエラー", err);
+    }
+  };
+
+  const handleDelete = async (event) => {
+    event.preventDefault(); // ページがリロードされないようフォームのデフォルトの動作を防止
+
+    try {
+      await axios.delete(`${baseUrl}/books/${id}`, {
+        headers: {
+          authorization: `Bearer ${cookies.token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      navigate("/");
+    } catch (err) {
+      setErrorMessage("APIリクエストエラー");
+      console.error("APIリクエストエラー", err);
+    }
+  };
 
   return (
     <div className="home">
@@ -77,52 +107,61 @@ export function EditReview() {
         />
       ) : (
         <>
-          <h1 className="title">レビュー詳細</h1>
+          <h1>レビュー詳細</h1>
           <form>
-
-          <label>タイトル</label>
-          <p>
-            <textarea
-              type="text"
-              // onChange={handleDetailChange}
-              className="book-title"
-              value={title}
+            <label>タイトル</label>
+            <p>
+              <textarea
+                type="text"
+                onChange={handleTitleChange}
+                className="book-title"
+                value={title}
               />
-          </p>
-          <label>詳細</label>
-          <p>
-            <textarea
-              type="text"
-              // onChange={handleDetailChange}
-              className="book-detail"
-              value={detail}
+            </p>
+            <label>詳細</label>
+            <p>
+              <textarea
+                type="text"
+                onChange={handleDetailChange}
+                className="book-detail"
+                value={detail}
               />
-          </p>
-          <label>レビュー</label>
-          <p>
-            <select
-              className="book-review"
-              id="review"
-              value={review}
-              // onChange={handleReviewChange}
+            </p>
+            <label>レビュー</label>
+            <p>
+              <select
+                className="book-review"
+                id="review"
+                value={review}
+                onChange={handleReviewChange}
               >
-              <option value="5">5</option>
-              <option value="4">4</option>
-              <option value="3">3</option>
-              <option value="2">2</option>
-              <option value="1">1</option>
-            </select>
-          </p>
-          <label>URL</label>
-          <p>
-            <textarea
-              type="text"
-              // onChange={handleDetailChange}
-              className="book-url"
-              value={url}
+                <option value="5">5</option>
+                <option value="4">4</option>
+                <option value="3">3</option>
+                <option value="2">2</option>
+                <option value="1">1</option>
+              </select>
+            </p>
+            <label>URL</label>
+            <p>
+              <textarea
+                type="text"
+                onChange={handleUrlChange}
+                className="book-url"
+                value={url}
               />
-          </p>
+            </p>
+            <button className="register-button" onClick={handleSubmit}>
+              レビュー更新
+            </button>
           </form>
+          <button className="register-button" onClick={handleDelete}>
+            レビュー削除
+          </button>
+          {successMessage && (
+            <div className="success-message">{successMessage}</div>
+          )}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
         </>
       )}
     </div>

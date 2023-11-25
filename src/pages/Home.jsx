@@ -86,6 +86,7 @@ export function Home() {
       <NewReview />
       <div className="home__book-list"></div>
       {/* ここに書籍一覧を表示するロジックを追加 */}
+      <Link to="/newreview">レビュー登録へ</Link>
       <ul className="book-list__items">
         {books.map((book) => (
           <li className="book-item" key={book.id}>

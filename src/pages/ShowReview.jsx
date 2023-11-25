@@ -11,9 +11,6 @@ import { css } from "@emotion/react";
 import { ClipLoader } from "react-spinners";
 
 export function ShowReview() {
-  // const auth = useSelector((state) => state.auth.isSignIn);
-  // const [successMessage, setSuccessMessage] = useState("");
-  // const { pathname } = useLocation();
   const [cookies] = useCookies();
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -69,14 +66,20 @@ export function ShowReview() {
               <></>
             )}
           </div>
-          <label>タイトル</label>
-          <p>{title}</p>
-          <label>詳細</label>
-          <p>{detail}</p>
-          <label>レビュー</label>
-          <p>{review}</p>
-          <label>URL</label>
-          <p>{url}</p>
+          <div>
+            <label className="book-item__title">タイトル:{title}</label>
+          </div>
+
+          <div>
+            <label className="book-item__detail">詳細:</label>
+            {detail}
+          </div>
+          <div>
+            <label className="book-item__review">レビュー: ★{review}</label>
+          </div>
+          <div>
+            <label>URL:{url}</label>
+          </div>
         </div>
       )}
     </div>

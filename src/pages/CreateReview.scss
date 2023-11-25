@@ -22,39 +22,25 @@
 .book-item__detail{
   color:rgb(0, 190, 13)
 }
-.book-item__url{
+.review-input{
   color: #535453;
  font-size: 5px;
 }
-/* styles.css */
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-}
-
-.pagination li {
-  margin: 0 5px;
-  display: inline-block;
-}
-
-.pagination a {
-  text-decoration: none;
-  color: #333;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.pagination a:hover {
-  background-color: #eee;
-}
-
-.pagination .active {
-  background-color: #007bff;
+.review-title {
+  background: #204e99 0 0 no-repeat padding-box;
+  border-radius: 6px 6px 0 6px;
   color: #fff;
-  border: 1px solid #007bff;
+  font-weight: 700;
+  font-size: 22px;
+  padding: 10px 9px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.register-button{
+  background-color: #111abe;
+  color: #ffffff;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
 }

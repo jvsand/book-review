@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./createreview.scss";
 import { useCookies } from "react-cookie";
 import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux/es/exports";
+// import { useSelector } from "react-redux/es/exports";
 import { baseUrl } from "../env";
 
 export function CreateReview() {
-  const auth = useSelector((state) => state.auth.isSignIn);
+  // const auth = useSelector((state) => state.auth.isSignIn);
   const [successMessage, setSuccessMessage] = useState("");
   const { pathname } = useLocation();
   const [cookies] = useCookies();
@@ -66,20 +67,21 @@ export function CreateReview() {
 
   return (
     <header className="header">
-      <div className="goto-home">
+      {/* <div className="goto-home">
         {auth ? (
           pathname === "/newreview" ? (
             <Link to="/">一覧画面へ</Link>
           ) : (
-            <Link to="/newreview">レビュー登録へ</Link>
+            <Link to="/newreview" >レビュー登録へ</Link>
           )
         ) : (
           <></>
         )}
-      </div>
+      </div> */}
       {pathname === "/newreview" && (
         <>
-          <h1 className="title">レビュー詳細</h1>
+          <h1 className="review-title">レビュー詳細</h1>
+          <Link to="/">一覧画面へ</Link>
           <form id="login-form">
             <div>
               <label htmlFor="title">タイトル:</label>
