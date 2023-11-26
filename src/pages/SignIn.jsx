@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn } from "../authSlice";
 import "./signin.scss";
-import { url } from "../env";
+import { baseUrl } from "../env";
 
 export function SignIn() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -25,7 +25,7 @@ export function SignIn() {
     }
 
     axios
-      .post(`${url}/signin`, { email, password })
+      .post(`${baseUrl}/signin`, { email, password })
       .then((response) => {
         // POST リクエストの結果を取得
         setCookie("token", response.data.token);
@@ -86,6 +86,9 @@ export function SignIn() {
             サインイン
           </button>
         </form>
+        <button className="home-button">
+          <Link to="/">一覧画面へ</Link>
+        </button>
       </main>
     </div>
   );

@@ -2,16 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import "./home.scss";
+import { Link } from "react-router-dom";
 import { Header } from "../components/Header";
 import Pagination from "../components/Pagination";
 import SignOut from "./SignOut";
-import { url } from "../env";
+import NewReview from "./CreateReview";
+import { baseUrl } from "../env";
 
 export function Home() {
   const [, setErrorMessage] = useState("");
   const [books, setBooks] = useState([]);
+  const [, setConfig] = useState([]);
   const [cookies] = useCookies();
-
   const [currentPage, setCurrentPage] = useState(0);
   const booksPerPage = 10; // 1ページあたりのアイテム数
   const allReviews = 60; // 全てのアイテム数 ←削除する
@@ -22,7 +24,7 @@ export function Home() {
       try {
         const config = cookies.token;
         const res = await axios.get(
-          config ? `${url}/books` : `${url}/public/books`,
+          config ? `${baseUrl}/books` : `${baseUrl}/public/books`,
           {
             headers: {
               authorization: config ? `Bearer ${config}` : undefined,
@@ -35,6 +37,7 @@ export function Home() {
         );
         console.log("一覧を表示します", config);
         setBooks(res.data);
+        setConfig(config);
       } catch (err) {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       }
@@ -55,19 +58,48 @@ export function Home() {
     return `${start} - ${end} 件`; //11−20件
   };
 
+  const handleBookClick = async (bookId) => {
+    try {
+      const config = cookies.token;
+      await axios.post(
+        `${baseUrl}/logs`,
+        {
+          selectBookId: bookId,
+        },
+        {
+          headers: {
+            // authorization:  `Bearer ${config}`,
+            authorization: config ? `Bearer ${config}` : undefined,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+      console.log("ログをPOSTしました");
+    } catch (err) {
+      console.error("ログのPOSTに失敗しました", err);
+    }
+  };
+
   return (
     <div className="home">
       <Header />
+      <NewReview />
       <div className="home__book-list"></div>
       {/* ここに書籍一覧を表示するロジックを追加 */}
+      <Link to="/newreview">レビュー登録へ</Link>
       <ul className="book-list__items">
         {books.map((book) => (
           <li className="book-item" key={book.id}>
-            {book.title}
-            <span className="book-item__title">title:{book.title}</span>
-            <p className="book-item__review">review: {book.review}</p>
-            <p className="book-item__detail">detail: {book.detail}</p>
-            <p className="book-item__url">url: {book.url}</p>
+            <Link
+              to={`/detail/${book.id}`}
+              className="book-item-link"
+              onClick={() => handleBookClick(book.id)}
+            >
+              <span className="book-item__title">title:{book.title}</span>
+              <p className="book-item__review">review: ★{book.review}</p>
+              <p className="book-item__detail">detail: {book.detail}</p>
+              <p className="book-item__url">url: {book.url}</p>
+            </Link>
           </li>
         ))}
       </ul>

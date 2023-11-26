@@ -1,18 +1,9 @@
 @charset "utf-8";
 
-.name-input1 {
-  width: 10%;
-  font-size: large;
-  height: 30px;
-  margin-bottom: 25px;
-}
-
-.edit-button {
-  background-color: #242F9B;
-  color: #ffffff;
-  width: 100px;
-  height: 40px;
-  border-radius: 5px;
+.loading-spinner {
+  display: block;
+  margin: 0 auto;
+  border-color: red;
 }
 
 .home__title{

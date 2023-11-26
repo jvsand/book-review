@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { signIn } from "../authSlice";
 import "./signup.scss";
 import resizeImage from "../components/ResizeImage";
-import { url } from "../env";
+import { baseUrl } from "../env";
 
 export function SignUp() {
   const auth = useSelector((state) => state.auth.isSignIn);
@@ -35,7 +35,7 @@ export function SignUp() {
 
     const reqData = { name, email, password };
     try {
-      const response = await axios.post(`${url}/users`, reqData);
+      const response = await axios.post(`${baseUrl}/users`, reqData);
       const token = response.data.token;
       dispatch(signIn());
       setCookie("token", token);
@@ -44,7 +44,7 @@ export function SignUp() {
       const formData = new FormData();
       formData.append("icon", resizedImage, resizedImage.name);
 
-      const iconResponse = await axios.post(`${url}/uploads`, formData, {
+      const iconResponse = await axios.post(`${baseUrl}/uploads`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -57,7 +57,6 @@ export function SignUp() {
         console.error("Upload failed");
         setError("アップロードに失敗しました。");
       }
-
     } catch (err) {
       if (err.response && err.response.status === 409) {
         // ステータスコード409の場合、ユーザーがすでに登録されているとみなす
